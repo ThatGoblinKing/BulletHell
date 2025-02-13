@@ -21,3 +21,9 @@ class EnemyDefaults:
     COLOR = (219,83,83)
     SHOOT_INTERVAL = 10000
     SPEED = 5
+    BULLET_SPAWN_RAD = 20
+
+class BulletDefaults:
+    SIZE = (5,5)
+    COLOR = (255,255,255)
+    SPEED = 3
