@@ -1,5 +1,7 @@
 from typing import Tuple
 
+from Constants import ScreenConstants
+
 import pygame as pg
 from pygame import Vector2, Rect
 from pygame.sprite import Sprite
@@ -17,3 +19,8 @@ class GameEntity(Sprite):
         self.rect: Rect = self.image.get_rect()
         self.rect.center = pos
         self.velocity: Vector2 = Vector2(0, 0)
+
+    def clamp_within_screen(self) -> bool:
+        start_rect_pos = self.rect.center
+        self.rect = self.rect.clamp(Rect((0,0), ScreenConstants.SIZE))
+        return not start_rect_pos == self.rect.center

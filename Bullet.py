@@ -1,17 +1,20 @@
 import math
 from typing import Tuple, override
 
+import pygame
+from pygame import Vector2
+
 from GameEntity import GameEntity
-from Constants import BulletDefaults as BDef
+from Constants import BulletConstants as BDef
 
 class Bullet(GameEntity):
     def __init__(self,
                  pos: Tuple[int, int],
                  angle: int,
-                 size: Tuple[int, int] = BDef.SIZE,
-                 speed: int = BDef.SPEED,
+                 size: Tuple[int, int] = BDef.DEFAULT_SIZE,
+                 speed: int = BDef.DEFAULT_SPEED,
                  delta_curve: int = 0):
-        super().__init__(pos, size, BDef.COLOR)
+        super().__init__(pos, size, BDef.DEFAULT_COLOR)
         self.speed = speed
         self.angle = angle
         self.delta_curve = delta_curve
@@ -19,9 +22,11 @@ class Bullet(GameEntity):
     @override
     def update(self):
         self.angle += self.delta_curve
-        self.move()
+        self.velocity = Vector2(
+            self.speed * math.cos(self.angle),
+            self.speed * math.sin(self.angle)
+        )
         self.rect.center += self.velocity
 
-    def move(self):
-        self.velocity.x = self.speed * math.sin(math.radians(-self.angle))
-        self.velocity.y = self.speed * math.cos(math.radians(-self.angle))
+    def draw_trajectory(self, screen: pygame.Surface):
+        pygame.draw.line(screen, (255,0,0), self.rect.center, self.rect.center + (self.velocity * 10))
